@@ -4,11 +4,19 @@ import android.graphics.Typeface
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.gestures.detectTransformGestures
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.foundation.gestures.calculateCentroid
+import androidx.compose.foundation.gestures.calculatePan
+import androidx.compose.foundation.gestures.calculateZoom
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayCircle
@@ -19,9 +27,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.TransformOrigin
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.input.pointer.positionChanged
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -33,18 +44,55 @@ import androidx.compose.ui.unit.sp
 import com.harmony.cheatsheet.audio.Notes
 import com.harmony.cheatsheet.audio.Synth
 import com.harmony.cheatsheet.data.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent { MaterialTheme(colorScheme = lightColorScheme()) { ScaleChartScreen(HarmonyDb.get(this)) } }
     }
-    override fun onStop() { Synth.stop(); super.onStop() }
+    override fun onStop() { Playback.stop(); super.onStop() }
 }
 
-/* ------------------------------------------------------------------ */
-/*  Excel look: colors / fonts / sizes taken from the "Scale Chart" sheet */
-/* ------------------------------------------------------------------ */
+/* ---------------- playback + visual feedback ---------------- */
+/** Plays a sound and tells the table which cell(s) are sounding right now. */
+object Playback {
+    var activeKeys by mutableStateOf(setOf<String>())   // sustained glow: the cell you pressed
+    var stepKey by mutableStateOf<String?>(null)        // flashing: the cell sounding at this moment
+    private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+    private var job: Job? = null
+
+    fun play(keys: Set<String>, midi: List<Int>, mode: String, steps: List<String> = emptyList()) {
+        if (midi.isEmpty()) return
+        job?.cancel()
+        Synth.play(midi, mode)
+        activeKeys = keys; stepKey = null
+        job = scope.launch {
+            when (mode) {
+                "scale" -> { midi.indices.forEach { i -> stepKey = steps.getOrNull(i % 7); delay(350) }; stepKey = null; delay(650) }
+                "chord" -> delay(((midi.size * 0.3 + 2.0) * 1000).toLong())
+                else -> delay(2000)
+            }
+            activeKeys = emptySet(); stepKey = null
+        }
+    }
+    fun stop() { job?.cancel(); Synth.stop(); activeKeys = emptySet(); stepKey = null }
+}
+
+@Composable
+private fun PlayFx(strong: Boolean) {
+    val t = rememberInfiniteTransition(label = "fx")
+    val a by t.animateFloat(0.10f, 0.55f, infiniteRepeatable(tween(300), RepeatMode.Reverse), label = "a")
+    Box(Modifier.fillMaxSize().background(Color(0xFFFFEB3B).copy(alpha = if (strong) 0.6f else a))
+        .border(2.5.dp, Color(0xFFFF6F00)))
+}
+
+/* ---------------- Excel look ---------------- */
 private fun hx(v: Long) = Color(0xFF000000 or v)
 private val GREEN = hx(0x00B050); private val BLUE = hx(0x0070C0); private val RED = hx(0xC00000)
 private val PINK = hx(0xDC84B4); private val ORANGE = hx(0xC55A11); private val MED = hx(0xA9D18E)
@@ -58,30 +106,27 @@ private val Slab = FontFamily.Serif
 
 // column widths B..T (Excel chars*7+5 px): index 0=B ... 18=T
 private val WCOL = floatArrayOf(
-    136.4f, 73.4f, 73.4f, 73.4f, 73.4f, 73.4f, 73.4f, 73.4f, 23.6f,      // B..J
-    136.4f, 73.4f, 73.4f, 73.4f, 73.4f, 73.4f, 78f, 73.4f, 23.6f, 168.3f) // K..T
+    136.4f, 73.4f, 73.4f, 73.4f, 73.4f, 73.4f, 73.4f, 73.4f, 23.6f,
+    136.4f, 73.4f, 73.4f, 73.4f, 73.4f, 73.4f, 78f, 73.4f, 23.6f, 168.3f)
 private fun cw(a: Int, b: Int = a): Dp = (a..b).sumOf { WCOL[it].toDouble() }.toFloat().dp
 private fun rh(pt: Float): Dp = (pt * 4f / 3f).dp
-private val DW = WCOL.sum()
-private const val DH = 750f
+private val DW = WCOL.sum()          // landscape design width
+private val PW = cw(0, 7)            // portrait design width (one table)
 
-// extra gold "Enharmonic Chords" cells that are filled by hand in the sheet
 private val GOLD_CELLS = setOf("F# Major|6", "D# minor|1", "C# Major|2", "C# Major|6",
     "A# minor|1", "A# minor|4", "Gb Major|3", "Eb minor|5")
 
 private data class Hi(val bg: Color, val fg: Color)
-
-/** Re-creation of the sheet's conditional-formatting rules (by priority). */
 private fun highlight(chord: String, idx: Int, tonic: String, v: String): Hi? {
     val c = chord.trim()
-    if (idx == 6 && c == tonic) return Hi(ORANGE, Color.White)          // Leading tone
-    if (v.isNotEmpty() && c == v) return Hi(PINK, Color.Black)          // V of the tonic
-    if (idx == 4 && c == tonic) return Hi(RED, Color.White)             // Dominant
-    if (idx == 3 && c == tonic) return Hi(BLUE, Color.White)            // Sub-dominant
-    if (idx == 0 && c == tonic) return Hi(GREEN, Color.White)           // Tonic
-    if (idx == 2 && c == tonic) return Hi(MED, hx(0x7E0000))            // Mediant
-    if (idx == 5 && c == tonic) return Hi(SUBM, Color.White)            // Sub-mediant
-    if (idx == 1 && c == tonic) return Hi(SUPER, Color.Black)           // Super-tonic
+    if (idx == 6 && c == tonic) return Hi(ORANGE, Color.White)
+    if (v.isNotEmpty() && c == v) return Hi(PINK, Color.Black)
+    if (idx == 4 && c == tonic) return Hi(RED, Color.White)
+    if (idx == 3 && c == tonic) return Hi(BLUE, Color.White)
+    if (idx == 0 && c == tonic) return Hi(GREEN, Color.White)
+    if (idx == 2 && c == tonic) return Hi(MED, hx(0x7E0000))
+    if (idx == 5 && c == tonic) return Hi(SUBM, Color.White)
+    if (idx == 1 && c == tonic) return Hi(SUPER, Color.Black)
     return null
 }
 
@@ -92,7 +137,7 @@ private fun rootOf(chord: String) = Regex("^[A-G][#b]?").find(chord)!!.value.let
 private fun XCell(
     text: String, w: Dp, h: Dp, bg: Color = Color.White, fg: Color = Color.Black, pt: Float = 11f,
     bold: Boolean = false, weight: FontWeight? = null, family: FontFamily = Cal, border: Boolean = true,
-    play: Boolean = false, onClick: (() -> Unit)? = null
+    play: Boolean = false, fxKey: String? = null, onClick: (() -> Unit)? = null
 ) {
     var m = Modifier.size(w, h).background(bg)
     if (border) m = m.border(0.7.dp, Color.Black)
@@ -107,53 +152,58 @@ private fun XCell(
                 fontWeight = weight ?: if (bold) FontWeight.Bold else FontWeight.Normal,
                 fontFamily = family, maxLines = 1, softWrap = false, overflow = TextOverflow.Clip)
         }
+        if (fxKey != null) {
+            if (fxKey == Playback.stepKey) PlayFx(strong = true)
+            else if (fxKey in Playback.activeKeys) PlayFx(strong = false)
+        }
     }
 }
 
+/* ---------------- scale tables ---------------- */
 @Composable
-private fun ScaleHeader(title: String, bg: Color, heads: List<String>, c0: Int) {
+private fun ScaleBlock(c0: Int, title: String, bg: Color, rows: List<ScaleRow>, heads: List<String>, tonic: String, v: String) = Column {
     XCell(title, cw(c0, c0 + 7), rh(22.95f), bg, Color.White, 16f, family = Narrow, bold = true)
     Row {
         XCell("Scale Name", cw(c0), rh(19.95f), Color.White, NAVY, 12f, family = Narrow, bold = true, border = false)
         heads.forEachIndexed { i, hd -> XCell(hd, cw(c0 + 1 + i), rh(19.95f), pt = 14f, bold = true) }
     }
-}
-
-@Composable
-private fun ScaleRowView(s: ScaleRow, tonic: String, v: String, c0: Int) = Row {
-    XCell(s.name, cw(c0), rh(18f), pt = 11f, weight = FontWeight.Black, play = true) {
-        Synth.play(Notes.scaleMidi(s.name), "scale") }
-    s.degrees.split("|").forEachIndexed { i, ch ->
-        val hi = highlight(ch, i, tonic, v)
-        val gold = hi == null && "${s.name}|$i" in GOLD_CELLS
-        XCell(ch, cw(c0 + 1 + i), rh(18f), bg = hi?.bg ?: if (gold) GOLD else Color.White, fg = hi?.fg ?: Color.Black,
-            pt = 11f, family = Slab, bold = hi != null, weight = if (hi == null) FontWeight.SemiBold else null) {
-            Synth.play(Notes.romanChordMidi(ch), "block") }
+    rows.forEach { s ->
+        Row {
+            XCell(s.name, cw(c0), rh(18f), pt = 11f, weight = FontWeight.Black, play = true, fxKey = "S|${s.name}") {
+                Playback.play(setOf("S|${s.name}"), Notes.scaleMidi(s.name), "scale", (0..6).map { "C|${s.name}|$it" }) }
+            s.degrees.split("|").forEachIndexed { i, ch ->
+                val hi = highlight(ch, i, tonic, v)
+                val gold = hi == null && "${s.name}|$i" in GOLD_CELLS
+                val key = "C|${s.name}|$i"
+                XCell(ch, cw(c0 + 1 + i), rh(18f), bg = hi?.bg ?: if (gold) GOLD else Color.White, fg = hi?.fg ?: Color.Black,
+                    pt = 11f, family = Slab, bold = hi != null, weight = if (hi == null) FontWeight.SemiBold else null, fxKey = key) {
+                    Playback.play(setOf(key), Notes.romanChordMidi(ch), "block") }
+            }
+        }
     }
 }
 
+private val MAJ = listOf("I", "ii", "iii", "IV", "V", "vi", "vii°")
+private val MIN = listOf("i", "ii°", "III", "iv", "V", "VI", "VII")
+private val C_MAJ_SHARP = hx(0x767171); private val C_MAJ_FLAT = hx(0x3B3838)
+
+/* ---------------- Index ---------------- */
 @Composable
-private fun ScaleColumn(c0: Int, t1: String, bg1: Color, sharp: List<ScaleRow>, t2: String, bg2: Color, flat: List<ScaleRow>,
-                        heads: List<String>, tonic: String, v: String) = Column {
-    ScaleHeader(t1, bg1, heads, c0)
-    sharp.forEach { ScaleRowView(it, tonic, v, c0) }
-    Spacer(Modifier.height(rh(19.2f)))
-    ScaleHeader(t2, bg2, heads, c0)
-    flat.forEach { ScaleRowView(it, tonic, v, c0) }
-    Spacer(Modifier.height(rh(12.6f)))
+private fun TonicDropdown(tonic: String, chords: List<String>, onTonic: (String) -> Unit, w: Dp, h: Dp, pt: Float, border: Boolean) {
+    var open by remember { mutableStateOf(false) }
+    Box {
+        XCell("$tonic  ▾", w, h, pt = pt, bold = true, border = border) { open = true }
+        DropdownMenu(open, { open = false }) {
+            chords.forEach { c -> DropdownMenuItem(text = { Text(c) }, onClick = { onTonic(c); open = false }) } }
+    }
 }
 
 @Composable
 private fun IndexColumn(tonic: String, chords: List<String>, onTonic: (String) -> Unit, v: String, vv: String) = Column {
     val w = cw(18)
-    var open by remember { mutableStateOf(false) }
     XCell("Index", w, rh(22.95f), GREY, Color.Black, 14f, bold = true)
     XCell("Tonic Chord ", w, rh(19.95f), GREEN, Color.White, 12f, bold = true)
-    Box {
-        XCell("$tonic  ▾", w, rh(18f), pt = 14f, bold = true, border = false) { open = true }
-        DropdownMenu(open, { open = false }) {
-            chords.forEach { c -> DropdownMenuItem(text = { Text(c) }, onClick = { onTonic(c); open = false }) } }
-    }
+    TonicDropdown(tonic, chords, onTonic, w, rh(18f), 14f, false)
     XCell("Sub Dominant Function", w, rh(18f), PLAYC, Color.White, 12f, bold = true)
     Spacer(Modifier.height(rh(18f)))
     XCell("Dominant Function", w, rh(18f), hx(0x9E0000), Color.White, 12f, bold = true)
@@ -172,6 +222,35 @@ private fun IndexColumn(tonic: String, chords: List<String>, onTonic: (String) -
     XCell("Leading Tone", w, rh(18f), ORANGE, Color.White, 12f, bold = true)
 }
 
+/** Portrait version of the Index: same cells and colors, laid out as a compact grid. */
+@Composable
+private fun IndexPortrait(tonic: String, chords: List<String>, onTonic: (String) -> Unit, v: String, vv: String) = Column {
+    val h = rh(22f); val u = PW / 6
+    XCell("Index", PW, rh(22.95f), GREY, Color.Black, 14f, bold = true)
+    Row {
+        XCell("Tonic Chord", u, h, GREEN, Color.White, 11f, bold = true)
+        TonicDropdown(tonic, chords, onTonic, u, h, 14f, true)
+        XCell("V", u, h, PINK, Color.Black, 12f, bold = true)
+        XCell(v, u, h, pt = 14f, bold = true)
+        XCell("V/V", u, h, hx(0x7E2455), Color.White, 12f, bold = true)
+        XCell(vv, u, h, pt = 14f, bold = true)
+    }
+    val q = PW / 4
+    Row {
+        XCell("Sub Dominant Function", q, h, PLAYC, Color.White, 9f, bold = true)
+        XCell("Dominant Function", q, h, hx(0x9E0000), Color.White, 10f, bold = true)
+        XCell("Mediant", q, h, MED, hx(0x7E0000), 11f, bold = true)
+        XCell("Sub Mediant", q, h, hx(0x295E20), Color.White, 11f, bold = true)
+    }
+    val t = PW / 3
+    Row {
+        XCell("Super Tonic", t, h, SUPER, Color.Black, 11f, bold = true)
+        XCell("Leading Tone", t, h, ORANGE, Color.White, 11f, bold = true)
+        XCell("Enharmonic Chords", t, h, GOLD, Color.Black, 11f, bold = true)
+    }
+}
+
+/* ---------------- Chords Chart ---------------- */
 private val CHORD_ROWS = listOf(
     listOf("Major" to "Major", "Major7 (Δ7)" to "Δ7 (Major7)", " Dominant 7 (7)" to "7 (Dominant 7)", "Italian +6" to "Italian +6"),
     listOf("Minor" to "Minor", "minor 7 (m7)" to "m7 (minor 7)", "minMaj7 (mΔ7)" to "mΔ7 (minMaj7)", "French +6" to "French +6"),
@@ -179,21 +258,27 @@ private val CHORD_ROWS = listOf(
     listOf("Augmented" to "Augmented", "Augmented Maj 7 (+M7)" to "Augmented Maj 7", "Augmented 7 (+7)" to "Augmented 7", "Neapolitan 6 (1st Inversion)" to "Neapolitan 6 (1st Inversion)"))
 
 @Composable
-private fun ChordsChart(spell: Map<String, String>) = Row {
+private fun ChordLabel(t: String, w: Dp, h: Dp) = XCell(t, w, h, pt = if (t.length > 21) 8f else 10f, bold = true)
+
+@Composable
+private fun ChordValue(key: String, spell: Map<String, String>, w: Dp, h: Dp) {
+    val notes = spell[key] ?: ""
+    val fx = "H|$key"
+    XCell(notes, w, h, pt = 12f, family = Slab, bold = true, play = true, fxKey = fx) {
+        if (notes.isNotEmpty()) Playback.play(setOf(fx), Notes.chordMidi(notes), "chord") }
+}
+
+@Composable
+private fun ChordsChartWide(spell: Map<String, String>) = Row {
     val h = rh(15.6f)
-    @Composable fun lab(t: String, w: Dp) = XCell(t, w, h, pt = if (t.length > 21) 8f else 10f, bold = true)
-    @Composable fun valc(key: String, w: Dp) {
-        val notes = spell[key] ?: ""
-        XCell(notes, w, h, pt = 12f, family = Slab, bold = true, play = true) { if (notes.isNotEmpty()) Synth.play(Notes.chordMidi(notes), "chord") }
-    }
     Column {
         CHORD_ROWS.forEach { r ->
             Row {
-                lab(r[0].first, cw(0)); valc(r[0].second, cw(1, 2))
-                lab(r[1].first, cw(3, 5)); valc(r[1].second, cw(6, 7))
+                ChordLabel(r[0].first, cw(0), h); ChordValue(r[0].second, spell, cw(1, 2), h)
+                ChordLabel(r[1].first, cw(3, 5), h); ChordValue(r[1].second, spell, cw(6, 7), h)
                 Spacer(Modifier.width(cw(8)))
-                lab(r[2].first, cw(9)); valc(r[2].second, cw(10, 12))
-                lab(r[3].first, cw(13, 14)); valc(r[3].second, cw(15, 16))
+                ChordLabel(r[2].first, cw(9), h); ChordValue(r[2].second, spell, cw(10, 12), h)
+                ChordLabel(r[3].first, cw(13, 14), h); ChordValue(r[3].second, spell, cw(15, 16), h)
                 Spacer(Modifier.width(cw(17)))
             }
         }
@@ -202,37 +287,106 @@ private fun ChordsChart(spell: Map<String, String>) = Row {
 }
 
 @Composable
-private fun RelativeScales(r: Relative?) = Column {
-    XCell("Relative Scales", cw(0, 18), rh(21f), Color.White, GREEN, 14f, weight = FontWeight.Black, border = false)
-    val groups = listOf(
-        Triple("Dominant (V)", 0..2, RED) to r?.dominant, Triple("Subdominant (IV)", 3..5, BLUE) to r?.subdominant,
-        Triple("Relative Key (Major/minor)", 6..9, SLATE) to r?.relativeKey, Triple("Relative of Dominant", 10..13, ORANGE) to r?.relDominant,
-        Triple("Relative of Subdominant", 14..16, SLATE) to r?.relSubdominant, Triple("Parallel", 17..18, hx(0x3B3838)) to r?.parallel)
-    Row { groups.forEach { (g, _) -> XCell(g.first, cw(g.second.first, g.second.last), rh(15f), Color.White, g.third, 11f, family = Narrow, bold = true, border = false) } }
-    Row { groups.forEach { (g, name) -> val n = name ?: ""
-        XCell(n, cw(g.second.first, g.second.last), rh(29.4f), pt = 12f, weight = FontWeight.Black, border = false, play = true) {
-            if (n.isNotEmpty()) Synth.play(Notes.scaleMidi(n), "scale") } } }
+private fun ChordsChartTall(spell: Map<String, String>) = Column {
+    val h = rh(19f)
+    XCell("Chords Chart", PW, rh(20f), GREY, Color.Black, 12f, bold = true)
+    listOf(0 to 1, 2 to 3).forEach { (a, b) ->
+        CHORD_ROWS.forEach { r ->
+            Row {
+                ChordLabel(r[a].first, cw(0), h); ChordValue(r[a].second, spell, cw(1, 2), h)
+                ChordLabel(r[b].first, cw(3, 4), h); ChordValue(r[b].second, spell, cw(5, 7), h)
+            }
+        }
+    }
+}
+
+/* ---------------- Relative scales ---------------- */
+private data class RelItem(val label: String, val color: Color, val name: String?)
+
+private fun relItems(r: Relative?) = listOf(
+    RelItem("Dominant (V)", RED, r?.dominant), RelItem("Subdominant (IV)", BLUE, r?.subdominant),
+    RelItem("Relative Key (Major/minor)", SLATE, r?.relativeKey), RelItem("Relative of Dominant", ORANGE, r?.relDominant),
+    RelItem("Relative of Subdominant", SLATE, r?.relSubdominant), RelItem("Parallel", hx(0x3B3838), r?.parallel))
+
+@Composable
+private fun RelCell(it: RelItem, w: Dp) {
+    val n = it.name ?: ""
+    val fx = "R|${it.label}"
+    XCell(it.label, w, rh(15f), Color.White, it.color, 11f, family = Narrow, bold = true, border = false)
 }
 
 @Composable
-private fun Sheet(tonic: String, chords: List<String>, onTonic: (String) -> Unit, scales: List<ScaleRow>,
-                  spell: Map<String, String>, rel: Relative?, v: String, vv: String) = Column {
+private fun RelValue(it: RelItem, w: Dp) {
+    val n = it.name ?: ""
+    val fx = "R|${it.label}"
+    XCell(n, w, rh(29.4f), pt = 12f, weight = FontWeight.Black, border = false, play = true, fxKey = fx) {
+        if (n.isNotEmpty()) Playback.play(setOf(fx, "S|$n"), Notes.scaleMidi(n), "scale") }
+}
+
+@Composable
+private fun RelativeWide(r: Relative?) = Column {
+    XCell("Relative Scales", cw(0, 18), rh(21f), Color.White, GREEN, 14f, weight = FontWeight.Black, border = false)
+    val spans = listOf(0..2, 3..5, 6..9, 10..13, 14..16, 17..18)
+    val items = relItems(r)
+    Row { items.forEachIndexed { i, it -> RelCell(it, cw(spans[i].first, spans[i].last)) } }
+    Row { items.forEachIndexed { i, it -> RelValue(it, cw(spans[i].first, spans[i].last)) } }
+}
+
+@Composable
+private fun RelativeTall(r: Relative?) = Column {
+    XCell("Relative Scales", PW, rh(21f), Color.White, GREEN, 14f, weight = FontWeight.Black, border = false)
+    val items = relItems(r)
+    items.chunked(3).forEach { chunk ->
+        Row { chunk.forEach { RelCell(it, PW / 3) } }
+        Row { chunk.forEach { RelValue(it, PW / 3) } }
+    }
+}
+
+/* ---------------- sheets ---------------- */
+@Composable
+private fun SheetWide(tonic: String, chords: List<String>, onTonic: (String) -> Unit, scales: List<ScaleRow>,
+                      spell: Map<String, String>, rel: Relative?, v: String, vv: String) = Column {
     XCell("Harmony Cheat Sheet ", cw(0, 18), rh(54.6f), Color.White, Color.Black, 22f, weight = FontWeight.Black, border = false)
-    val majHeads = listOf("I", "ii", "iii", "IV", "V", "vi", "vii°")
-    val minHeads = listOf("i", "ii°", "III", "iv", "V", "VI", "VII")
     fun pick(kind: String, grp: String) = scales.filter { it.kind == kind && it.grp == grp }
     Row {
-        ScaleColumn(0, "Major Sharp Scales", hx(0x767171), pick("major", "sharp"), "Major Flat Scales", hx(0x3B3838), pick("major", "flat"), majHeads, tonic, v)
+        Column {
+            ScaleBlock(0, "Major Sharp Scales", C_MAJ_SHARP, pick("major", "sharp"), MAJ, tonic, v)
+            Spacer(Modifier.height(rh(19.2f)))
+            ScaleBlock(0, "Major Flat Scales", C_MAJ_FLAT, pick("major", "flat"), MAJ, tonic, v)
+            Spacer(Modifier.height(rh(12.6f)))
+        }
         Spacer(Modifier.width(cw(8)))
-        ScaleColumn(9, "Minor Sharp Scales", SUPER, pick("minor", "sharp"), "Minor Flat Scales", SLATE, pick("minor", "flat"), minHeads, tonic, v)
+        Column {
+            ScaleBlock(9, "Minor Sharp Scales", SUPER, pick("minor", "sharp"), MIN, tonic, v)
+            Spacer(Modifier.height(rh(19.2f)))
+            ScaleBlock(9, "Minor Flat Scales", SLATE, pick("minor", "flat"), MIN, tonic, v)
+            Spacer(Modifier.height(rh(12.6f)))
+        }
         Spacer(Modifier.width(cw(17)))
         IndexColumn(tonic, chords, onTonic, v, vv)
     }
-    ChordsChart(spell)
+    ChordsChartWide(spell)
     Spacer(Modifier.height(rh(10.2f)))
-    RelativeScales(rel)
+    RelativeWide(rel)
 }
 
+@Composable
+private fun SheetTall(tonic: String, chords: List<String>, onTonic: (String) -> Unit, scales: List<ScaleRow>,
+                      spell: Map<String, String>, rel: Relative?, v: String, vv: String) = Column {
+    XCell("Harmony Cheat Sheet ", PW, rh(40f), Color.White, Color.Black, 20f, weight = FontWeight.Black, border = false)
+    fun pick(kind: String, grp: String) = scales.filter { it.kind == kind && it.grp == grp }
+    val gap = Modifier.height(rh(8f))
+    IndexPortrait(tonic, chords, onTonic, v, vv); Spacer(gap)
+    ScaleBlock(0, "Major Sharp Scales", C_MAJ_SHARP, pick("major", "sharp"), MAJ, tonic, v); Spacer(gap)
+    ScaleBlock(0, "Major Flat Scales", C_MAJ_FLAT, pick("major", "flat"), MAJ, tonic, v); Spacer(gap)
+    ScaleBlock(0, "Minor Sharp Scales", SUPER, pick("minor", "sharp"), MIN, tonic, v); Spacer(gap)
+    ScaleBlock(0, "Minor Flat Scales", SLATE, pick("minor", "flat"), MIN, tonic, v); Spacer(gap)
+    ChordsChartTall(spell); Spacer(gap)
+    RelativeTall(rel)
+    Spacer(Modifier.height(rh(20f)))
+}
+
+/* ---------------- screen: data + zoom/pan anywhere ---------------- */
 @Composable
 fun ScaleChartScreen(db: HarmonyDb) {
     val ctx = androidx.compose.ui.platform.LocalContext.current
@@ -254,28 +408,55 @@ fun ScaleChartScreen(db: HarmonyDb) {
         vv = (dao.dominantOf(v) ?: "").trim()
     }
 
-    // The whole sheet is drawn at its design size and scaled to fit the screen width.
-    // Pinch to zoom, drag to pan, double-tap to reset.
     BoxWithConstraints(Modifier.fillMaxSize().background(Color.White)) {
-        val viewW = with(LocalDensity.current) { maxWidth.toPx() }
-        val viewH = with(LocalDensity.current) { maxHeight.toPx() }
-        val dW = with(LocalDensity.current) { DW.dp.toPx() }
-        val dH = with(LocalDensity.current) { DH.dp.toPx() }
+        val density = LocalDensity.current
+        val viewW = with(density) { maxWidth.toPx() }
+        val viewH = with(density) { maxHeight.toPx() }
+        val landscape = maxWidth > maxHeight
+        val dW = with(density) { (if (landscape) DW.dp else PW).toPx() }
         val fit = viewW / dW
-        var zoom by remember { mutableFloatStateOf(1f) }
-        var off by remember { mutableStateOf(Offset.Zero) }
+        var dH by remember(landscape) { mutableFloatStateOf(1f) }
+        var zoom by remember(landscape) { mutableFloatStateOf(1f) }
+        var off by remember(landscape) { mutableStateOf(Offset.Zero) }
         fun clamp(o: Offset, s: Float) = Offset(
             o.x.coerceIn(minOf(0f, viewW - dW * s), 0f), o.y.coerceIn(minOf(0f, viewH - dH * s), 0f))
-        Box(Modifier.fillMaxSize().clipToBounds()
-            .pointerInput(fit) { detectTransformGestures { c, pan, z, _ ->
-                val nz = (zoom * z).coerceIn(1f, 5f)
-                off = clamp(c - (c - off) * (nz / zoom) + pan, fit * nz); zoom = nz } }
-            .pointerInput(Unit) { detectTapGestures(onDoubleTap = { zoom = 1f; off = Offset.Zero }) }) {
+
+        // Gestures are watched in the Initial pass, so they work over cells, buttons and empty areas alike.
+        // A tap passes through to the cell; dragging or pinching takes over (and cancels the tap).
+        Box(Modifier.fillMaxSize().clipToBounds().pointerInput(fit, landscape) {
+            awaitEachGesture {
+                awaitFirstDown(requireUnconsumed = false, pass = PointerEventPass.Initial)
+                var moving = false; var acc = Offset.Zero
+                do {
+                    val ev = awaitPointerEvent(PointerEventPass.Initial)
+                    val pressed = ev.changes.count { it.pressed }
+                    if (pressed >= 2 || moving) {
+                        val z = ev.calculateZoom(); val pan = ev.calculatePan(); val c = ev.calculateCentroid()
+                        if (c.isSpecified) {
+                            val nz = (zoom * z).coerceIn(1f, 6f)
+                            off = clamp(c - (c - off) * (nz / zoom) + pan, fit * nz); zoom = nz
+                        }
+                        ev.changes.forEach { if (it.positionChanged()) it.consume() }
+                        moving = true
+                    } else {
+                        acc += ev.calculatePan()
+                        if (acc.getDistance() > viewConfiguration.touchSlop) moving = true
+                    }
+                } while (ev.changes.any { it.pressed })
+            }
+        }) {
             Box(Modifier.wrapContentSize(Alignment.TopStart, unbounded = true).graphicsLayer {
                 transformOrigin = TransformOrigin(0f, 0f)
-                scaleX = fit * zoom; scaleY = fit * zoom; translationX = off.x; translationY = off.y }) {
-                Sheet(tonic, chordList, { tonic = it }, scales, spell, rel, v, vv)
+                scaleX = fit * zoom; scaleY = fit * zoom; translationX = off.x; translationY = off.y
+            }.onSizeChanged { dH = it.height.toFloat() }) {
+                if (landscape) SheetWide(tonic, chordList, { tonic = it }, scales, spell, rel, v, vv)
+                else SheetTall(tonic, chordList, { tonic = it }, scales, spell, rel, v, vv)
+            }
+            if (zoom > 1.02f || off != Offset.Zero) {
+                FilledTonalButton(onClick = { zoom = 1f; off = Offset.Zero },
+                    modifier = Modifier.align(Alignment.BottomEnd).padding(12.dp)) { Text("1×") }
             }
         }
     }
 }
+
