@@ -1,0 +1,1132 @@
+{
+ "scales": [
+  {
+   "name": "C Major",
+   "kind": "major",
+   "group": "sharp",
+   "chords": [
+    "C",
+    "Dm",
+    "Em",
+    "F",
+    "G",
+    "Am",
+    "B°"
+   ]
+  },
+  {
+   "name": "G Major",
+   "kind": "major",
+   "group": "sharp",
+   "chords": [
+    "G",
+    "Am",
+    "Bm",
+    "C",
+    "D",
+    "Em",
+    "F#°"
+   ]
+  },
+  {
+   "name": "D Major",
+   "kind": "major",
+   "group": "sharp",
+   "chords": [
+    "D",
+    "Em",
+    "F#m",
+    "G",
+    "A",
+    "Bm",
+    "C#°"
+   ]
+  },
+  {
+   "name": "A Major",
+   "kind": "major",
+   "group": "sharp",
+   "chords": [
+    "A",
+    "Bm",
+    "C#m",
+    "D",
+    "E",
+    "F#m",
+    "G#°"
+   ]
+  },
+  {
+   "name": "E Major",
+   "kind": "major",
+   "group": "sharp",
+   "chords": [
+    "E",
+    "F#m",
+    "G#m",
+    "A",
+    "B",
+    "C#m",
+    "D#°"
+   ]
+  },
+  {
+   "name": "B Major",
+   "kind": "major",
+   "group": "sharp",
+   "chords": [
+    "B",
+    "C#m",
+    "D#m",
+    "E",
+    "F#",
+    "G#m",
+    "A#°"
+   ]
+  },
+  {
+   "name": "F# Major",
+   "kind": "major",
+   "group": "sharp",
+   "chords": [
+    "F#",
+    "G#m",
+    "A#m",
+    "B",
+    "C#",
+    "D#m",
+    "F°"
+   ]
+  },
+  {
+   "name": "C# Major",
+   "kind": "major",
+   "group": "sharp",
+   "chords": [
+    "C#",
+    "D#m",
+    "Fm",
+    "F#",
+    "G#",
+    "A#m",
+    "C°"
+   ]
+  },
+  {
+   "name": "A minor",
+   "kind": "minor",
+   "group": "sharp",
+   "chords": [
+    "Am",
+    "B°",
+    "C",
+    "Dm",
+    "E",
+    "F",
+    "G"
+   ]
+  },
+  {
+   "name": "E minor",
+   "kind": "minor",
+   "group": "sharp",
+   "chords": [
+    "Em",
+    "F#°",
+    "G",
+    "Am",
+    "B",
+    "C",
+    "D"
+   ]
+  },
+  {
+   "name": "B minor",
+   "kind": "minor",
+   "group": "sharp",
+   "chords": [
+    "Bm",
+    "C#°",
+    "D",
+    "Em",
+    "F#",
+    "G",
+    "A"
+   ]
+  },
+  {
+   "name": "F# minor",
+   "kind": "minor",
+   "group": "sharp",
+   "chords": [
+    "F#m",
+    "G#°",
+    "A",
+    "Bm",
+    "C#",
+    "D",
+    "E"
+   ]
+  },
+  {
+   "name": "C# minor",
+   "kind": "minor",
+   "group": "sharp",
+   "chords": [
+    "C#m",
+    "D#°",
+    "E",
+    "F#m",
+    "G#",
+    "A",
+    "B"
+   ]
+  },
+  {
+   "name": "G# minor",
+   "kind": "minor",
+   "group": "sharp",
+   "chords": [
+    "G#m",
+    "A#°",
+    "B",
+    "C#m",
+    "D#",
+    "E",
+    "F#"
+   ]
+  },
+  {
+   "name": "D# minor",
+   "kind": "minor",
+   "group": "sharp",
+   "chords": [
+    "D#m",
+    "F°",
+    "F#",
+    "G#m",
+    "A#",
+    "B",
+    "C#"
+   ]
+  },
+  {
+   "name": "A# minor",
+   "kind": "minor",
+   "group": "sharp",
+   "chords": [
+    "A#m",
+    "C°",
+    "C#",
+    "D#m",
+    "F",
+    "F#",
+    "G#"
+   ]
+  },
+  {
+   "name": "F Major",
+   "kind": "major",
+   "group": "flat",
+   "chords": [
+    "F",
+    "Gm",
+    "Am",
+    "Bb",
+    "C",
+    "Dm",
+    "E°"
+   ]
+  },
+  {
+   "name": "Bb Major",
+   "kind": "major",
+   "group": "flat",
+   "chords": [
+    "Bb",
+    "Cm",
+    "Dm",
+    "Eb",
+    "F",
+    "Gm",
+    "A°"
+   ]
+  },
+  {
+   "name": "Eb Major",
+   "kind": "major",
+   "group": "flat",
+   "chords": [
+    "Eb",
+    "Fm",
+    "Gm",
+    "Ab",
+    "Bb",
+    "Cm",
+    "D°"
+   ]
+  },
+  {
+   "name": "Ab Major",
+   "kind": "major",
+   "group": "flat",
+   "chords": [
+    "Ab",
+    "Bbm",
+    "Cm",
+    "Db",
+    "Eb",
+    "Fm",
+    "G°"
+   ]
+  },
+  {
+   "name": "Db Major",
+   "kind": "major",
+   "group": "flat",
+   "chords": [
+    "Db",
+    "Ebm",
+    "Fm",
+    "Gb",
+    "Ab",
+    "Bbm",
+    "C°"
+   ]
+  },
+  {
+   "name": "Gb Major",
+   "kind": "major",
+   "group": "flat",
+   "chords": [
+    "Gb",
+    "Abm",
+    "Bbm",
+    "B",
+    "Db",
+    "Ebm",
+    "F°"
+   ]
+  },
+  {
+   "name": "D minor",
+   "kind": "minor",
+   "group": "flat",
+   "chords": [
+    "Dm",
+    "E°",
+    "F",
+    "Gm",
+    "A",
+    "Bb",
+    "C"
+   ]
+  },
+  {
+   "name": "G minor",
+   "kind": "minor",
+   "group": "flat",
+   "chords": [
+    "Gm",
+    "A°",
+    "Bb",
+    "Cm",
+    "D",
+    "Eb",
+    "F"
+   ]
+  },
+  {
+   "name": "C minor",
+   "kind": "minor",
+   "group": "flat",
+   "chords": [
+    "Cm",
+    "D°",
+    "Eb",
+    "Fm",
+    "G",
+    "Ab",
+    "Bb"
+   ]
+  },
+  {
+   "name": "F minor",
+   "kind": "minor",
+   "group": "flat",
+   "chords": [
+    "Fm",
+    "G°",
+    "Ab",
+    "Bbm",
+    "C",
+    "Db",
+    "Eb"
+   ]
+  },
+  {
+   "name": "Bb minor",
+   "kind": "minor",
+   "group": "flat",
+   "chords": [
+    "Bbm",
+    "C°",
+    "Db",
+    "Ebm",
+    "F",
+    "Gb",
+    "Ab"
+   ]
+  },
+  {
+   "name": "Eb minor",
+   "kind": "minor",
+   "group": "flat",
+   "chords": [
+    "Ebm",
+    "F°",
+    "Gb",
+    "Abm",
+    "Bb",
+    "B",
+    "Db"
+   ]
+  }
+ ],
+ "chordChart": [
+  {
+   "tonic": "C",
+   "types": {
+    "Major": "C–E–G",
+    "Minor": "C–E♭–G",
+    "Diminished": "C–E♭–G♭",
+    "Augmented": "C–E–G♯",
+    "Δ7 (Major7)": "C–E–G–B",
+    "7 (Dominant 7)": "C–E–G–B♭",
+    "m7 (minor 7)": "C–E♭–G–B♭",
+    "mΔ7 (minMaj7)": "C–E♭–G–B",
+    "ø7 (Half Diminished)": "C–E♭–G♭–B♭",
+    "°7 (Diminished 7)": "C–E♭–G♭–B♭♭",
+    "Augmented 7": "C–E–G♯–B♭",
+    "Augmented Maj 7": "C–E–G♯–B",
+    "Italian +6": "Ab – C – F#",
+    "French +6": "Ab – C – D – F#",
+    "German +6": "Ab – C – Eb – F#",
+    "Neapolitan 6 (1st Inversion)": "F – Ab – Db"
+   }
+  },
+  {
+   "tonic": "C#",
+   "types": {
+    "Major": "C♯–E♯–G♯",
+    "Minor": "C♯–E–G♯",
+    "Diminished": "C♯–E–G",
+    "Augmented": "C♯–E♯–G*",
+    "Δ7 (Major7)": "C♯–E♯–G♯–B♯",
+    "7 (Dominant 7)": "C♯–E♯–G♯–B",
+    "m7 (minor 7)": "C♯–E–G♯–B",
+    "mΔ7 (minMaj7)": "C♯–E–G♯–B♯",
+    "ø7 (Half Diminished)": "C♯–E–G–B",
+    "°7 (Diminished 7)": "C♯–E–G–B♭",
+    "Augmented 7": "C♯–E♯–G*–B",
+    "Augmented Maj 7": "C♯–E♯–G*–B♯",
+    "Italian +6": "A – C# – F*",
+    "French +6": "A – C# – D# – F*",
+    "German +6": "A – C# – E – F*",
+    "Neapolitan 6 (1st Inversion)": "F# – A – D"
+   }
+  },
+  {
+   "tonic": "Db",
+   "types": {
+    "Major": "D♭–F–A♭",
+    "Minor": "D♭–F♭–A♭",
+    "Diminished": "D♭–F♭–A♭♭",
+    "Augmented": "D♭–F–A♯",
+    "Δ7 (Major7)": "D♭–F–A♭–C",
+    "7 (Dominant 7)": "D♭–F–A♭–C♭",
+    "m7 (minor 7)": "D♭–F♭–A♭–C♭",
+    "mΔ7 (minMaj7)": "D♭–F♭–A♭–C",
+    "ø7 (Half Diminished)": "D♭–F♭–A♭♭–C♭",
+    "°7 (Diminished 7)": "D♭–F♭–A♭♭–C♭♭",
+    "Augmented 7": "D♭–F–A♯–C♭",
+    "Augmented Maj 7": "D♭–F–A♯–C",
+    "Italian +6": "Bbb – Db – G",
+    "French +6": "Bbb – Db – Eb – G",
+    "German +6": "Bbb – Db – Fb – G",
+    "Neapolitan 6 (1st Inversion)": "Gb – Bbb – Ebb"
+   }
+  },
+  {
+   "tonic": "D",
+   "types": {
+    "Major": "D–F♯–A",
+    "Minor": "D–F–A",
+    "Diminished": "D–F–A♭",
+    "Augmented": "D–F♯–A♯",
+    "Δ7 (Major7)": "D–F♯–A–C♯",
+    "7 (Dominant 7)": "D–F♯–A–C",
+    "m7 (minor 7)": "D–F–A–C",
+    "mΔ7 (minMaj7)": "D–F–A–C♯",
+    "ø7 (Half Diminished)": "D–F–A♭–C",
+    "°7 (Diminished 7)": "D–F–A♭–C♭",
+    "Augmented 7": "D–F♯–A♯–C",
+    "Augmented Maj 7": "D–F♯–A♯–C♯",
+    "Italian +6": "Bb – D – G#",
+    "French +6": "Bb – D – E – G#",
+    "German +6": "Bb – D – F – G#",
+    "Neapolitan 6 (1st Inversion)": "G – Bb – Eb"
+   }
+  },
+  {
+   "tonic": "D#",
+   "types": {
+    "Major": "D♯–F*–A♯",
+    "Minor": "D♯–F♯–A♯",
+    "Diminished": "D♯–F♯–A",
+    "Augmented": "D♯–F*–A*",
+    "Δ7 (Major7)": "D♯–F*–A♯–C*",
+    "7 (Dominant 7)": "D♯–F*–A♯–C♯",
+    "m7 (minor 7)": "D♯–F♯–A♯–C♯",
+    "mΔ7 (minMaj7)": "D♯–F♯–A♯–C*",
+    "ø7 (Half Diminished)": "D♯–F♯–A–C♯",
+    "°7 (Diminished 7)": "D♯–F♯–A–C",
+    "Augmented 7": "D♯–F*–A*–C♯",
+    "Augmented Maj 7": "D♯–F*–A*–C*",
+    "Italian +6": "B – D# – G*",
+    "French +6": "B – D# – E# – G*",
+    "German +6": "B – D# – F# – G*",
+    "Neapolitan 6 (1st Inversion)": "G# – B – E"
+   }
+  },
+  {
+   "tonic": "Eb",
+   "types": {
+    "Major": "E♭–G–B♭",
+    "Minor": "E♭–G♭–B♭",
+    "Diminished": "E♭–G♭–A",
+    "Augmented": "E♭–G–B",
+    "Δ7 (Major7)": "E♭–G–B♭–D",
+    "7 (Dominant 7)": "E♭–G–B♭–D♭",
+    "m7 (minor 7)": "E♭–G♭–B♭–D♭",
+    "mΔ7 (minMaj7)": "E♭–G♭–B♭–D",
+    "ø7 (Half Diminished)": "E♭–G♭–B♭♭–D♭",
+    "°7 (Diminished 7)": "E♭–G♭–B♭♭–D♭♭",
+    "Augmented 7": "E♭–G–B–D♭",
+    "Augmented Maj 7": "E♭–G–B–D",
+    "Italian +6": "Cb – Eb – A",
+    "French +6": "Cb – Eb – F – A",
+    "German +6": "Cb – Eb – Gb – A",
+    "Neapolitan 6 (1st Inversion)": "Ab – Cb – Fb"
+   }
+  },
+  {
+   "tonic": "E",
+   "types": {
+    "Major": "E–G♯–B",
+    "Minor": "E–G–B",
+    "Diminished": "E–G–B♭",
+    "Augmented": "E–G♯–B♯",
+    "Δ7 (Major7)": "E–G♯–B–D♯",
+    "7 (Dominant 7)": "E–G♯–B–D",
+    "m7 (minor 7)": "E–G–B–D",
+    "mΔ7 (minMaj7)": "E–G–B–D♯",
+    "ø7 (Half Diminished)": "E–G–B♭–D",
+    "°7 (Diminished 7)": "E–G–B♭–C♯",
+    "Augmented 7": "E–G♯–B♯–D",
+    "Augmented Maj 7": "E–G♯–B♯–D♯",
+    "Italian +6": "C – E – A#",
+    "French +6": "C – E – F# – A#",
+    "German +6": "C – E – G – A#",
+    "Neapolitan 6 (1st Inversion)": "A – C – F"
+   }
+  },
+  {
+   "tonic": "F",
+   "types": {
+    "Major": "F–A–C",
+    "Minor": "F–A♭–C",
+    "Diminished": "F–A♭–C♭",
+    "Augmented": "F–A–C♯",
+    "Δ7 (Major7)": "F–A–C–E",
+    "7 (Dominant 7)": "F–A–C–E♭",
+    "m7 (minor 7)": "F–A♭–C–E♭",
+    "mΔ7 (minMaj7)": "F–A♭–C–E",
+    "ø7 (Half Diminished)": "F–A♭–C♭–E♭",
+    "°7 (Diminished 7)": "F–A♭–C♭–E♭♭",
+    "Augmented 7": "F–A–C♯–E♭",
+    "Augmented Maj 7": "F–A–C♯–E",
+    "Italian +6": "Db – F – B",
+    "French +6": "Db – F – G – B",
+    "German +6": "Db – F – Ab – B",
+    "Neapolitan 6 (1st Inversion)": "Bb – Db – Gb"
+   }
+  },
+  {
+   "tonic": "F#",
+   "types": {
+    "Major": "F♯–A♯–C♯",
+    "Minor": "F♯–A–C♯",
+    "Diminished": "F♯–A–C",
+    "Augmented": "F♯–A♯–C*",
+    "Δ7 (Major7)": "F♯–A♯–C♯–E♯",
+    "7 (Dominant 7)": "F♯–A♯–C♯–E",
+    "m7 (minor 7)": "F♯–A–C♯–E",
+    "mΔ7 (minMaj7)": "F♯–A–C♯–E♯",
+    "ø7 (Half Diminished)": "F♯–A–C–E",
+    "°7 (Diminished 7)": "F♯–A–C–E♯",
+    "Augmented 7": "F♯–A♯–C*–E",
+    "Augmented Maj 7": "F♯–A♯–C*–E♯",
+    "Italian +6": "D – F# – B#",
+    "French +6": "D – F# – G# – B#",
+    "German +6": "D – F# – A – B#",
+    "Neapolitan 6 (1st Inversion)": "B – D – G"
+   }
+  },
+  {
+   "tonic": "Gb",
+   "types": {
+    "Major": "G♭–B♭–D♭",
+    "Minor": "G♭–B♭♭–D♭",
+    "Diminished": "G♭–B♭♭–D♭♭",
+    "Augmented": "G♭–B♭–D",
+    "Δ7 (Major7)": "G♭–B♭–D♭–F",
+    "7 (Dominant 7)": "G♭–B♭–D♭–F♭",
+    "m7 (minor 7)": "G♭–B♭♭–D♭–F♭",
+    "mΔ7 (minMaj7)": "G♭–B♭♭–D♭–F",
+    "ø7 (Half Diminished)": "G♭–B♭♭–D♭♭–F♭",
+    "°7 (Diminished 7)": "G♭–B♭♭–D♭♭–F♭♭",
+    "Augmented 7": "G♭–B♭–D–F♭",
+    "Augmented Maj 7": "G♭–B♭–D–F",
+    "Italian +6": "Ebb – Gb – C",
+    "French +6": "Ebb – Gb – Ab – C",
+    "German +6": "Ebb – Gb – Bbb – C",
+    "Neapolitan 6 (1st Inversion)": "Cb – Ebb – Abb"
+   }
+  },
+  {
+   "tonic": "G",
+   "types": {
+    "Major": "G–B–D",
+    "Minor": "G–B♭–D",
+    "Diminished": "G–B♭–D♭",
+    "Augmented": "G–B–D♯",
+    "Δ7 (Major7)": "G–B–D–F♯",
+    "7 (Dominant 7)": "G–B–D–F",
+    "m7 (minor 7)": "G–B♭–D–F",
+    "mΔ7 (minMaj7)": "G–B♭–D–F♯",
+    "ø7 (Half Diminished)": "G–B♭–D♭–F",
+    "°7 (Diminished 7)": "G–B♭–D♭–F♭",
+    "Augmented 7": "G–B–D♯–F",
+    "Augmented Maj 7": "G–B–D♯–F♯",
+    "Italian +6": "Eb – G – C#",
+    "French +6": "Eb – G – A – C#",
+    "German +6": "Eb – G – Bb – C#",
+    "Neapolitan 6 (1st Inversion)": "C – Eb – Ab"
+   }
+  },
+  {
+   "tonic": "G#",
+   "types": {
+    "Major": "G♯–B♯–D♯",
+    "Minor": "G♯–B–D♯",
+    "Diminished": "G♯–B–D",
+    "Augmented": "G♯–B♯–D♯",
+    "Δ7 (Major7)": "G♯–B♯–D♯–F*",
+    "7 (Dominant 7)": "G♯–B♯–D♯–F♯",
+    "m7 (minor 7)": "G♯–B–D♯–F♯",
+    "mΔ7 (minMaj7)": "G♯–B–D♯–F*",
+    "ø7 (Half Diminished)": "G♯–B–D–F♯",
+    "°7 (Diminished 7)": "G♯–B♭–D–F",
+    "Augmented 7": "G♯–B♯–D♯–F♯",
+    "Augmented Maj 7": "G♯–B♯–D♯–F*",
+    "Italian +6": "E – G# – C*",
+    "French +6": "E – G# – A# – C*",
+    "German +6": "E – G# – B – C*",
+    "Neapolitan 6 (1st Inversion)": "C# – E – A"
+   }
+  },
+  {
+   "tonic": "Ab",
+   "types": {
+    "Major": "A♭–C–E♭",
+    "Minor": "A♭–C♭–E♭",
+    "Diminished": "A♭–C♭–E♭♭",
+    "Augmented": "A♭–C–E",
+    "Δ7 (Major7)": "A♭–C–E♭–G",
+    "7 (Dominant 7)": "A♭–C–E♭–G♭",
+    "m7 (minor 7)": "A♭–C♭–E♭–G♭",
+    "mΔ7 (minMaj7)": "A♭–C♭–E♭–G",
+    "ø7 (Half Diminished)": "A♭–C♭–E♭♭–G♭",
+    "°7 (Diminished 7)": "A♭–C♭–E♭♭–G♭♭",
+    "Augmented 7": "A♭–C–E–G♭",
+    "Augmented Maj 7": "A♭–C–E–G",
+    "Italian +6": "Fb – Ab – D",
+    "French +6": "Fb – Ab – Bb – D",
+    "German +6": "Fb – Ab – Cb – D",
+    "Neapolitan 6 (1st Inversion)": "Db – Fb – Bbb"
+   }
+  },
+  {
+   "tonic": "A",
+   "types": {
+    "Major": "A–C♯–E",
+    "Minor": "A–C–E",
+    "Diminished": "A–C–E♭",
+    "Augmented": "A–C♯–E♯",
+    "Δ7 (Major7)": "A–C♯–E–G♯",
+    "7 (Dominant 7)": "A–C♯–E–G",
+    "m7 (minor 7)": "A–C–E–G",
+    "mΔ7 (minMaj7)": "A–C–E–G♯",
+    "ø7 (Half Diminished)": "A–C–E♭–G",
+    "°7 (Diminished 7)": "A–C–E♭–G♭",
+    "Augmented 7": "A–C♯–E♯–G",
+    "Augmented Maj 7": "A–C♯–E♯–G♯",
+    "Italian +6": "F – A – D#",
+    "French +6": "F – A – B – D#",
+    "German +6": "F – A – C – D#",
+    "Neapolitan 6 (1st Inversion)": "D – F – Bb"
+   }
+  },
+  {
+   "tonic": "A#",
+   "types": {
+    "Major": "A♯–C*–E♯",
+    "Minor": "A♯–C♯–E♯",
+    "Diminished": "A♯–C♯–E",
+    "Augmented": "A♯–C♯–E*",
+    "Δ7 (Major7)": "A♯–C♯–E♯–G♯",
+    "7 (Dominant 7)": "A♯–C*–E♯–G♯",
+    "m7 (minor 7)": "A♯–C♯–E♯–G♯",
+    "mΔ7 (minMaj7)": "A♯–C♯–E♯–G*",
+    "ø7 (Half Diminished)": "A♯–C♯–E–G♯",
+    "°7 (Diminished 7)": "A♯–C♯–E–G",
+    "Augmented 7": "A♯–C♯–E*–G♯",
+    "Augmented Maj 7": "A♯–C♯–E*–G*",
+    "Italian +6": "F# – A# – E*",
+    "French +6": "F# – A# – B# – E*",
+    "German +6": "F# – A# – C# – E*",
+    "Neapolitan 6 (1st Inversion)": "D# – F# – B"
+   }
+  },
+  {
+   "tonic": "Bb",
+   "types": {
+    "Major": "B♭–D–F",
+    "Minor": "B♭–D♭–F",
+    "Diminished": "B♭–D♭–F♭",
+    "Augmented": "B♭–D–F♯",
+    "Δ7 (Major7)": "B♭–D–F–A",
+    "7 (Dominant 7)": "B♭–D–F–A♭",
+    "m7 (minor 7)": "B♭–D♭–F–A♭",
+    "mΔ7 (minMaj7)": "B♭–D♭–F–A",
+    "ø7 (Half Diminished)": "B♭–D♭–F♭–A♭",
+    "°7 (Diminished 7)": "B♭–D♭–F♭–A♭♭",
+    "Augmented 7": "B♭–D–F♯–A♭",
+    "Augmented Maj 7": "B♭–D–F♯–A",
+    "Italian +6": "Gb – Bb – E",
+    "French +6": "Gb – Bb – C – E",
+    "German +6": "Gb – Bb – Db – E",
+    "Neapolitan 6 (1st Inversion)": "Eb – Gb – Cb"
+   }
+  },
+  {
+   "tonic": "B",
+   "types": {
+    "Major": "B–D♯–F♯",
+    "Minor": "B–D–F♯",
+    "Diminished": "B–D–F",
+    "Augmented": "B–D♯–F*",
+    "Δ7 (Major7)": "B–D♯–F♯–A♯",
+    "7 (Dominant 7)": "B–D♯–F♯–A",
+    "m7 (minor 7)": "B–D–F♯–A",
+    "mΔ7 (minMaj7)": "B–D–F♯–A♯",
+    "ø7 (Half Diminished)": "B–D–F–A",
+    "°7 (Diminished 7)": "B–D–F–A♭",
+    "Augmented 7": "B–D♯–F*–A",
+    "Augmented Maj 7": "B–D♯–F*–A♯",
+    "Italian +6": "G – B – D#",
+    "French +6": "G – B – C# – D#",
+    "German +6": "G – B – D – D#",
+    "Neapolitan 6 (1st Inversion)": "E – G – C"
+   }
+  }
+ ],
+ "chordTypes": [
+  "Major",
+  "Minor",
+  "Diminished",
+  "Augmented",
+  "Δ7 (Major7)",
+  "7 (Dominant 7)",
+  "m7 (minor 7)",
+  "mΔ7 (minMaj7)",
+  "ø7 (Half Diminished)",
+  "°7 (Diminished 7)",
+  "Augmented 7",
+  "Augmented Maj 7",
+  "Italian +6",
+  "French +6",
+  "German +6",
+  "Neapolitan 6 (1st Inversion)"
+ ],
+ "dominant": {
+  "C": "G",
+  "G": "D",
+  "D": "A",
+  "A": "E",
+  "E": "B",
+  "B": "F#",
+  "F#": "C#",
+  "C#": "G#",
+  "F": "C",
+  "Bb": "F",
+  "Eb": "Bb",
+  "Ab": "Eb",
+  "Db": "Ab",
+  "Gb": "Db",
+  "Cb": "Gb",
+  "Am": "E",
+  "Em": "B",
+  "Bm": "F#",
+  "F#m": "C#",
+  "C#m": "G#",
+  "G#m": "D#",
+  "D#m": "A#",
+  "A#m": "E#",
+  "Dm": "A",
+  "Gm": "D",
+  "Cm": "G",
+  "Fm": "C",
+  "Bbm": "F",
+  "Ebm": "Bb",
+  "Abm": "Eb"
+ },
+ "relative": [
+  {
+   "tonic": "C",
+   "dominant": "G Major",
+   "subdominant": "F Major",
+   "relativeKey": "A minor",
+   "relDominant": "E minor",
+   "relSubdominant": "D minor",
+   "parallel": "C minor"
+  },
+  {
+   "tonic": "G",
+   "dominant": "D Major",
+   "subdominant": "C Major",
+   "relativeKey": "E minor",
+   "relDominant": "B minor",
+   "relSubdominant": "A minor",
+   "parallel": "G minor"
+  },
+  {
+   "tonic": "D",
+   "dominant": "A Major",
+   "subdominant": "G Major",
+   "relativeKey": "B minor",
+   "relDominant": "F# minor",
+   "relSubdominant": "E minor",
+   "parallel": "D minor"
+  },
+  {
+   "tonic": "A",
+   "dominant": "E Major",
+   "subdominant": "D Major",
+   "relativeKey": "F# minor",
+   "relDominant": "C# minor",
+   "relSubdominant": "B minor",
+   "parallel": "A minor"
+  },
+  {
+   "tonic": "E",
+   "dominant": "B Major",
+   "subdominant": "A Major",
+   "relativeKey": "C# minor",
+   "relDominant": "G# minor",
+   "relSubdominant": "F# minor",
+   "parallel": "E minor"
+  },
+  {
+   "tonic": "B",
+   "dominant": "F# Major",
+   "subdominant": "E Major",
+   "relativeKey": "G# minor",
+   "relDominant": "D# minor",
+   "relSubdominant": "C# minor",
+   "parallel": "B minor"
+  },
+  {
+   "tonic": "F#",
+   "dominant": "C# Major",
+   "subdominant": "B Major",
+   "relativeKey": "D# minor",
+   "relDominant": "A# minor",
+   "relSubdominant": "G# minor",
+   "parallel": "F# minor"
+  },
+  {
+   "tonic": "C#",
+   "dominant": "G# Major",
+   "subdominant": "F# Major",
+   "relativeKey": "A# minor",
+   "relDominant": "E# minor",
+   "relSubdominant": "D# minor",
+   "parallel": "C# minor"
+  },
+  {
+   "tonic": "F",
+   "dominant": "C Major",
+   "subdominant": "Bb Major",
+   "relativeKey": "D minor",
+   "relDominant": "A minor",
+   "relSubdominant": "G minor",
+   "parallel": "F minor"
+  },
+  {
+   "tonic": "Bb",
+   "dominant": "F Major",
+   "subdominant": "Eb Major",
+   "relativeKey": "G minor",
+   "relDominant": "D minor",
+   "relSubdominant": "C minor",
+   "parallel": "Bb minor"
+  },
+  {
+   "tonic": "Eb",
+   "dominant": "Bb Major",
+   "subdominant": "Ab Major",
+   "relativeKey": "C minor",
+   "relDominant": "G minor",
+   "relSubdominant": "F minor",
+   "parallel": "Eb minor"
+  },
+  {
+   "tonic": "Ab",
+   "dominant": "Eb Major",
+   "subdominant": "Db Major",
+   "relativeKey": "F minor",
+   "relDominant": "C minor",
+   "relSubdominant": "Bb minor",
+   "parallel": "Ab minor"
+  },
+  {
+   "tonic": "Db",
+   "dominant": "Ab Major",
+   "subdominant": "Gb Major",
+   "relativeKey": "Bb minor",
+   "relDominant": "F minor",
+   "relSubdominant": "Eb minor",
+   "parallel": "Db minor"
+  },
+  {
+   "tonic": "Gb",
+   "dominant": "Db Major",
+   "subdominant": "Cb Major",
+   "relativeKey": "Eb minor",
+   "relDominant": "Bb minor",
+   "relSubdominant": "Ab minor",
+   "parallel": "Gb minor"
+  },
+  {
+   "tonic": "Cb",
+   "dominant": "Gb Major",
+   "subdominant": "Fb Major",
+   "relativeKey": "Ab minor",
+   "relDominant": "Eb minor",
+   "relSubdominant": "Db minor",
+   "parallel": "Cb minor"
+  },
+  {
+   "tonic": "Am",
+   "dominant": "E minor",
+   "subdominant": "D minor",
+   "relativeKey": "C Major",
+   "relDominant": "G Major",
+   "relSubdominant": "F Major",
+   "parallel": "A Major"
+  },
+  {
+   "tonic": "Em",
+   "dominant": "B minor",
+   "subdominant": "A minor",
+   "relativeKey": "G Major",
+   "relDominant": "D Major",
+   "relSubdominant": "C Major",
+   "parallel": "E Major"
+  },
+  {
+   "tonic": "Bm",
+   "dominant": "F# minor",
+   "subdominant": "E minor",
+   "relativeKey": "D Major",
+   "relDominant": "A Major",
+   "relSubdominant": "G Major",
+   "parallel": "B Major"
+  },
+  {
+   "tonic": "F#m",
+   "dominant": "C# minor",
+   "subdominant": "B minor",
+   "relativeKey": "A Major",
+   "relDominant": "E Major",
+   "relSubdominant": "D Major",
+   "parallel": "F# Major"
+  },
+  {
+   "tonic": "C#m",
+   "dominant": "G# minor",
+   "subdominant": "F# minor",
+   "relativeKey": "E Major",
+   "relDominant": "B Major",
+   "relSubdominant": "A Major",
+   "parallel": "C# Major"
+  },
+  {
+   "tonic": "G#m",
+   "dominant": "D# minor",
+   "subdominant": "C# minor",
+   "relativeKey": "B Major",
+   "relDominant": "F# Major",
+   "relSubdominant": "E Major",
+   "parallel": "G# Major"
+  },
+  {
+   "tonic": "D#m",
+   "dominant": "A# minor",
+   "subdominant": "G# minor",
+   "relativeKey": "F# Major",
+   "relDominant": "C# Major",
+   "relSubdominant": "B Major",
+   "parallel": "D# Major"
+  },
+  {
+   "tonic": "A#m",
+   "dominant": "E# minor",
+   "subdominant": "D# minor",
+   "relativeKey": "C# Major",
+   "relDominant": "G# Major",
+   "relSubdominant": "F# Major",
+   "parallel": "A# Major"
+  },
+  {
+   "tonic": "Dm",
+   "dominant": "A minor",
+   "subdominant": "G minor",
+   "relativeKey": "F Major",
+   "relDominant": "C Major",
+   "relSubdominant": "Bb Major",
+   "parallel": "D Major"
+  },
+  {
+   "tonic": "Gm",
+   "dominant": "D minor",
+   "subdominant": "C minor",
+   "relativeKey": "Bb Major",
+   "relDominant": "F Major",
+   "relSubdominant": "Eb Major",
+   "parallel": "G Major"
+  },
+  {
+   "tonic": "Cm",
+   "dominant": "G minor",
+   "subdominant": "F minor",
+   "relativeKey": "Eb Major",
+   "relDominant": "Bb Major",
+   "relSubdominant": "Ab Major",
+   "parallel": "C Major"
+  },
+  {
+   "tonic": "Fm",
+   "dominant": "C minor",
+   "subdominant": "Bb minor",
+   "relativeKey": "Ab Major",
+   "relDominant": "Eb Major",
+   "relSubdominant": "Db Major",
+   "parallel": "F Major"
+  },
+  {
+   "tonic": "Bbm",
+   "dominant": "F minor",
+   "subdominant": "Eb minor",
+   "relativeKey": "Db Major",
+   "relDominant": "Ab Major",
+   "relSubdominant": "Gb Major",
+   "parallel": "Bb Major"
+  },
+  {
+   "tonic": "Ebm",
+   "dominant": "Bb minor",
+   "subdominant": "Ab minor",
+   "relativeKey": "Gb Major",
+   "relDominant": "Db Major",
+   "relSubdominant": "Cb Major",
+   "parallel": "Eb Major"
+  },
+  {
+   "tonic": "Abm",
+   "dominant": "Eb minor",
+   "subdominant": "Db minor",
+   "relativeKey": "Cb Major",
+   "relDominant": "Gb Major",
+   "relSubdominant": "Fb Major",
+   "parallel": "Ab Major"
+  }
+ ],
+ "chordList": [
+  "C",
+  "Cm",
+  "C°",
+  "C#",
+  "C#m",
+  "C#°",
+  "D",
+  "Dm",
+  "D°",
+  "Db",
+  "Dbm",
+  "Db°",
+  "D#",
+  "D#m",
+  "D#°",
+  "E",
+  "Em",
+  "E°",
+  "Eb",
+  "Ebm",
+  "Eb°",
+  "E#",
+  "E#m",
+  "E#°",
+  "F",
+  "F°",
+  "F#",
+  "F#m",
+  "F#°",
+  "G",
+  "Gm",
+  "G°",
+  "Gb",
+  "Gbm",
+  "Gb°",
+  "G#",
+  "G#m",
+  "G#°",
+  "A",
+  "Am",
+  "A°",
+  "Ab",
+  "Abm",
+  "Ab°",
+  "A#",
+  "A#m",
+  "A#°",
+  "B",
+  "Bm",
+  "B°",
+  "Bb",
+  "Bbm",
+  "Bb°"
+ ]
+}
